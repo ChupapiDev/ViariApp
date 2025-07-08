@@ -16,55 +16,54 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         },
     });
+    
+    // --- Card Spotlight Effect ---
+    const cards = document.querySelectorAll(".content-card");
+    cards.forEach(card => {
+        card.addEventListener("mousemove", e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty("--x", `${x}px`);
+            card.style.setProperty("--y", `${y}px`);
+        });
+    });
+
 
     // --- Hero Section Animation ---
     const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
     heroTimeline
-        .from(".hero-title span, .hero-title", {
+        .from(".hero-title, .hero-subtitle", {
             y: 50,
             opacity: 0,
             duration: 1,
-            stagger: 0.1,
+            stagger: 0.2,
         })
-        .from(".hero-subtitle", { y: 30, opacity: 0, duration: 0.8 }, "-=0.6")
         .from(".hero .cta-button", { y: 20, opacity: 0, duration: 0.6 }, "-=0.5");
 
-    // --- Staggered Section Animations on Scroll ---
-    const sections = document.querySelectorAll(
-        ".content-section, .emotional-section, .feature-section"
-    );
+    // --- Immersive Canvas Animation on Scroll ---
+    const mainColumnCards = document.querySelectorAll(".main-column .content-card");
+    const sideColumnCards = document.querySelectorAll(".side-column .content-card");
 
-    sections.forEach((section) => {
-        const elementsToAnimate = section.querySelectorAll("h2, p, .quote-container, .steps-container, .feature-use-cases, .feature-tagline");
-        
-        gsap.from(elementsToAnimate, {
+    const canvasTimeline = gsap.timeline({
+        scrollTrigger: {
+            trigger: ".immersive-canvas",
+            start: "top 80%",
+            toggleActions: "play none none none",
+        },
+        defaults: {
             y: 40,
             opacity: 0,
-            duration: 1,
+            duration: 0.8,
             ease: "power3.out",
             stagger: 0.2,
-            scrollTrigger: {
-                trigger: section,
-                start: "top 80%",
-                toggleActions: "play none none none",
-            },
-        });
+        }
     });
 
-    // --- Parallax Effect on Cards ---
-    const cards = document.querySelectorAll(".step, .use-case");
-    cards.forEach(card => {
-        gsap.to(card, {
-            y: -20,
-            ease: "none",
-            scrollTrigger: {
-                trigger: card,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 0.5,
-            }
-        });
-    });
+    canvasTimeline
+        .from(mainColumnCards)
+        .from(sideColumnCards, {}, "-=0.5"); // Animate side column slightly after main
+
 
     // --- Modern Modal Functionality with GSAP ---
     const modalOverlay = document.querySelector(".modal-overlay");
@@ -72,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalTriggers = document.querySelectorAll(".modal-trigger");
     const modalCloseBtn = document.querySelector(".modal-close-btn");
 
-    // Create a GSAP timeline for the modal animation
     const modalTimeline = gsap.timeline({
         paused: true,
         defaults: { ease: "power2.out" },
@@ -83,25 +81,16 @@ document.addEventListener("DOMContentLoaded", () => {
         .from(modal, { duration: 0.4, y: 50, opacity: 0 }, "-=0.2")
         .from(".modal > *", { duration: 0.3, y: 20, opacity: 0, stagger: 0.1 });
 
-    const openModal = () => {
-        modalTimeline.play();
-    };
+    const openModal = () => modalTimeline.play();
+    const closeModal = () => modalTimeline.reverse();
 
-    const closeModal = () => {
-        modalTimeline.reverse();
-    };
-
-    modalTriggers.forEach((trigger) => {
-        trigger.addEventListener("click", (e) => {
-            e.preventDefault();
-            openModal();
-        });
-    });
+    modalTriggers.forEach(trigger => trigger.addEventListener("click", e => {
+        e.preventDefault();
+        openModal();
+    }));
 
     modalCloseBtn.addEventListener("click", closeModal);
-    modalOverlay.addEventListener("click", (e) => {
-        if (e.target === modalOverlay) {
-            closeModal();
-        }
+    modalOverlay.addEventListener("click", e => {
+        if (e.target === modalOverlay) closeModal();
     });
 });
