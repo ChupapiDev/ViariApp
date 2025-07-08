@@ -2,67 +2,58 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- GSAP & ScrollTrigger Registration ---
     gsap.registerPlugin(ScrollTrigger);
 
-    // --- Navbar Scroll Effect ---
-    const navbar = document.querySelector(".navbar");
-    ScrollTrigger.create({
-        trigger: "body",
-        start: "top -50px",
-        end: "bottom bottom",
-        onUpdate: (self) => {
-            if (self.direction === 1) {
-                navbar.classList.add("scrolled");
-            } else if (window.scrollY < 50) {
-                navbar.classList.remove("scrolled");
-            }
-        },
-    });
-    
-    // --- Card Spotlight Effect ---
-    const cards = document.querySelectorAll(".content-card");
-    cards.forEach(card => {
-        card.addEventListener("mousemove", e => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            card.style.setProperty("--x", `${x}px`);
-            card.style.setProperty("--y", `${y}px`);
-        });
-    });
-
-
-    // --- Hero Section Animation ---
-    const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
-    heroTimeline
-        .from(".hero-title, .hero-subtitle", {
-            y: 50,
-            opacity: 0,
-            duration: 1,
-            stagger: 0.2,
-        })
-        .from(".hero .cta-button", { y: 20, opacity: 0, duration: 0.6 }, "-=0.5");
-
-    // --- Immersive Canvas Animation on Scroll ---
-    const mainColumnCards = document.querySelectorAll(".main-column .content-card");
-    const sideColumnCards = document.querySelectorAll(".side-column .content-card");
-
-    const canvasTimeline = gsap.timeline({
-        scrollTrigger: {
-            trigger: ".immersive-canvas",
-            start: "top 80%",
-            toggleActions: "play none none none",
-        },
-        defaults: {
-            y: 40,
+    // --- General Animation Function ---
+    const animateFrom = (element, y = 50, stagger = 0.1) => {
+        gsap.from(element, {
+            y,
             opacity: 0,
             duration: 0.8,
-            ease: "power3.out",
-            stagger: 0.2,
-        }
+            ease: "power2.out",
+            stagger,
+            scrollTrigger: {
+                trigger: element,
+                start: "top 85%",
+                toggleActions: "play none none none",
+            },
+        });
+    };
+
+    // --- Hero Section Animation ---
+    gsap.timeline({ defaults: { ease: "power2.out" } })
+        .from(".hero-title, .hero-subtitle", { y: 40, opacity: 0, duration: 1, stagger: 0.15 })
+        .from(".hero-cta", { y: 20, opacity: 0, duration: 0.8 }, "-=0.5");
+
+    // --- Content Sections Animations ---
+    document.querySelectorAll(".content-section").forEach(section => {
+        animateFrom(section, 60, 0);
+    });
+    
+    // --- Staggered Quote Animation ---
+    const quotes = document.querySelectorAll(".quote-container blockquote");
+    if(quotes.length > 0) {
+        animateFrom(quotes, 30, 0.15);
+    }
+
+    // --- Animated Divider ---
+    document.querySelectorAll(".section-divider").forEach(divider => {
+        gsap.fromTo(divider, 
+            { scaleX: 0 },
+            { 
+                scaleX: 1,
+                duration: 1.2,
+                ease: "power2.out",
+                transformOrigin: "center",
+                scrollTrigger: {
+                    trigger: divider,
+                    start: "top 90%",
+                    toggleActions: "play none none none"
+                }
+            }
+        );
     });
 
-    canvasTimeline
-        .from(mainColumnCards)
-        .from(sideColumnCards, {}, "-=0.5"); // Animate side column slightly after main
+    // --- Footer Animation ---
+    animateFrom(".footer > *", 50, 0.1);
 
 
     // --- Modern Modal Functionality with GSAP ---
@@ -73,13 +64,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const modalTimeline = gsap.timeline({
         paused: true,
-        defaults: { ease: "power2.out" },
+        defaults: { ease: "power2.out", duration: 0.4 },
     });
 
     modalTimeline
-        .to(modalOverlay, { duration: 0.3, autoAlpha: 1 })
-        .from(modal, { duration: 0.4, y: 50, opacity: 0 }, "-=0.2")
-        .from(".modal > *", { duration: 0.3, y: 20, opacity: 0, stagger: 0.1 });
+        .to(modalOverlay, { autoAlpha: 1 })
+        .from(modal, { y: 30, opacity: 0, scale: 0.98 }, "-=0.3")
+        .from(".modal > *", { y: 20, opacity: 0, stagger: 0.05 }, "-=0.2");
 
     const openModal = () => modalTimeline.play();
     const closeModal = () => modalTimeline.reverse();
