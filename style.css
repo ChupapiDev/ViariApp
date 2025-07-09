@@ -26,12 +26,12 @@ body {
     line-height: 1.7;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
-    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11'; /* Professional OpenType features */
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
 }
 
 /* --- 2. Layout & Spacing --- */
 .page-container {
-    max-width: 720px; /* Optimal reading width */
+    max-width: 720px;
     margin: 0 auto;
     padding: 0 1.5rem;
 }
@@ -57,17 +57,17 @@ body {
 h1, h2 {
     color: var(--heading-color);
     font-weight: 600;
-    letter-spacing: -0.025em; /* Tighten up spacing */
+    letter-spacing: -0.025em;
     line-height: 1.2;
 }
 .hero-title {
-    font-size: 2.2rem; /* Adjusted size for mobile */
+    font-size: 2.2rem;
     margin: 0 auto 1.5rem auto;
-    max-width: 25ch; /* Adjusted max-width for better line breaks */
+    max-width: 25ch;
 }
 .hero-title span {
-    color: var(--blue-highlight); /* Solid blue highlight */
-    background: none; /* Remove previous gradient background */
+    color: var(--blue-highlight);
+    background: none;
     -webkit-background-clip: unset;
     background-clip: unset;
 }
@@ -75,7 +75,7 @@ h1, h2 {
 
 h2 { font-size: 1.8rem; margin-bottom: 1.5rem; }
 p { color: var(--text-secondary); font-size: 1rem; margin-bottom: 1rem; }
-p:last-of-type { margin-bottom: 0; } /* Remove bottom margin on last paragraph */
+p:last-of-type { margin-bottom: 0; }
 
 .quote-container { margin-top: 2rem; }
 blockquote {
@@ -123,19 +123,19 @@ blockquote:last-child { margin-bottom: 0; }
     height: 1px;
     background: var(--border-color);
     width: 100%;
-    margin: 4rem 0; /* Creates symmetrical space */
-    transform: scaleX(0); /* Initially hidden */
+    margin: 4rem 0;
+    transform: scaleX(0);
 }
 
 /* --- 7. Impact Quote Section --- */
 .impact-quote-section {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(59, 130, 246, 0.08)); /* More subtle background */
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(59, 130, 246, 0.08));
     padding: 5rem 1.5rem;
     text-align: center;
     margin: 4rem 0;
     border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.05);
     overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.05); /* Subtle border */
 }
 
 .impact-quote-section blockquote {
@@ -160,7 +160,6 @@ blockquote:last-child { margin-bottom: 0; }
     z-index: 1;
 }
 
-/* Animation for impact quote (more subtle text-shadow) */
 @keyframes text-glow {
     0% { text-shadow: 0 0 2px var(--accent-color); opacity: 0.9; }
     50% { text-shadow: 0 0 10px var(--accent-color), 0 0 15px var(--accent-color); opacity: 1; }
@@ -170,44 +169,9 @@ blockquote:last-child { margin-bottom: 0; }
     animation: text-glow 4s ease-in-out infinite alternate;
 }
 
-
-/* --- 8. Modal --- */
-.modal-overlay {
-    background-color: rgba(5, 5, 8, 0.8);
-    backdrop-filter: blur(8px);
-    position: fixed; z-index: 9999; top: 0; left: 0;
-    width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; visibility: hidden;
-}
-.modal {
-    background: #111118;
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    padding: 2.5rem;
-    border-radius: 20px;
-    text-align: center;
-    max-width: 90%;
-    width: 380px;
-    box-shadow: 0 20px 60px -10px rgba(0,0,0,0.5);
-}
-.modal-icon { width: 50px; height: 50px; background: linear-gradient(45deg, var(--accent-color), var(--accent-hover)); border-radius: 50%; margin: 0 auto 1.5rem auto; }
-.modal h3 { color: var(--heading-color); font-size: 1.8rem; margin-bottom: 0.75rem; }
-.modal p { font-size: 1rem; margin-bottom: 2rem; }
-.modal-close-btn {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    padding: 12px 24px;
-    border-radius: 50px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
-}
-.modal-close-btn:hover { background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
-
-/* --- 9. Responsive Design --- */
+/* --- 8. Responsive Design --- */
 @media (min-width: 768px) {
-    .hero-title { font-size: 3.5rem; }
+    .hero-title { font-size: 3.2rem; }
+    .hero-title { max-width: 30ch; }
     .impact-quote-section blockquote { font-size: 2.5rem; }
 }

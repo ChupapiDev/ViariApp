@@ -54,34 +54,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Footer Animation ---
     animateFrom(".footer > *", 50, 0.1);
-
-
-    // --- Modern Modal Functionality with GSAP ---
-    const modalOverlay = document.querySelector(".modal-overlay");
-    const modal = document.querySelector(".modal");
-    const modalTriggers = document.querySelectorAll(".modal-trigger");
-    const modalCloseBtn = document.querySelector(".modal-close-btn");
-
-    const modalTimeline = gsap.timeline({
-        paused: true,
-        defaults: { ease: "power2.out", duration: 0.4 },
-    });
-
-    modalTimeline
-        .to(modalOverlay, { autoAlpha: 1 })
-        .from(modal, { y: 30, opacity: 0, scale: 0.98 }, "-=0.3")
-        .from(".modal > *", { y: 20, opacity: 0, stagger: 0.05 }, "-=0.2");
-
-    const openModal = () => modalTimeline.play();
-    const closeModal = () => modalTimeline.reverse();
-
-    modalTriggers.forEach(trigger => trigger.addEventListener("click", e => {
-        e.preventDefault();
-        openModal();
-    }));
-
-    modalCloseBtn.addEventListener("click", closeModal);
-    modalOverlay.addEventListener("click", e => {
-        if (e.target === modalOverlay) closeModal();
-    });
 });
